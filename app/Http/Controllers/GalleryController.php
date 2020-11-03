@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateGalleryRequest;
+use Illuminate\Foundation\Auth\User;
 
 class GalleryController extends Controller
 {
@@ -25,9 +27,18 @@ class GalleryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateGalleryRequest $request)
     {
-        //
+        $data = $request->validated();
+        $user = User::findOrFail($request['id']);
+        $gallery = Gallery::create([
+            "title" => $data["title"],
+            "description" => $data["description"],
+            "user_id" => $user['id']
+        ]);
+        foreach ($data['imageUrlList'] as $imageUrl) {
+        $gallery->addGalleryImages($imageUrl, $gallery['id']);
+        }
     }
 
     /**
@@ -36,9 +47,10 @@ class GalleryController extends Controller
      * @param  \App\Models\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function show(Gallery $gallery)
+    public function show($id)
     {
-        //
+        $gallery = Gallery::with('galleryImages', 'user')->findOrFail($id);
+        return $gallery;
     }
 
     /**
@@ -59,8 +71,9 @@ class GalleryController extends Controller
      * @param  \App\Models\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gallery $gallery)
+    public function destroy($id)
     {
-        //
+        $gallery = Gallery::findOrFail($id);
+        $gallery->delete();
     }
 }

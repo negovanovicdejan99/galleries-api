@@ -10,9 +10,19 @@ use App\Models\User;
 class Gallery extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'title',
+        'description',
+        'user_id'
+    ];
     public function user() {
         return $this->belongsTo(User::class);
+    }
+    public function addGalleryImages($imageUrl, $id) {
+        return $this->galleryImages()->create([
+            'imageUrl' => $imageUrl,
+            'gallery_id' => $id
+        ]);
     }
     public function galleryImages() {
         return $this->hasMany(GalleryImage::class);
