@@ -22,7 +22,7 @@ class GalleryImageFactory extends Factory
     public function definition()
     {
         return [
-            'imageUrl' => $this->faker->imageUrl(640, 480, 'cats'),
+            'imageUrl' => 'https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png',
             'gallery_id' => $this->faker->numberBetween(1, 20),
         ];
     }
