@@ -31,3 +31,5 @@ Route::get('/author/{id}', [UserController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/refresh', [AuthController::class, 'refresh']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/auth-user', [AuthController::class, 'authUser']);
