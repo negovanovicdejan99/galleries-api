@@ -22,7 +22,7 @@ class GalleryImageFactory extends Factory
     public function definition()
     {
         return [
-            'imageUrl' => 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
+            'Url' => 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
             'gallery_id' => $this->faker->numberBetween(1, 20),
         ];
     }

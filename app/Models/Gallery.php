@@ -18,9 +18,9 @@ class Gallery extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
-    public function addGalleryImages($imageUrl, $id) {
+    public function addGalleryImages($url, $id) {
         return $this->galleryImages()->create([
-            'imageUrl' => $imageUrl,
+            'imageUrl' => $url,
             'gallery_id' => $id
         ]);
     }

@@ -15,7 +15,7 @@ class CreateGalleryImagesTable extends Migration
     {
         Schema::create('gallery_images', function (Blueprint $table) {
             $table->id();
-            $table->string('imageUrl');
+            $table->string('url');
             $table->foreignId('gallery_id')->references('id')->on('galleries');
             $table->timestamps();
         });

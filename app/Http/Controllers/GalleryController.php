@@ -36,8 +36,8 @@ class GalleryController extends Controller
             "description" => $data["description"],
             "user_id" => $user['id']
         ]);
-        foreach ($data['imageUrlList'] as $imageUrl) {
-        $gallery->addGalleryImages($imageUrl, $gallery['id']);
+        foreach ($data['images'] as $url) {
+        $gallery->addGalleryImages($url, $gallery['id']);
         }
     }
 
