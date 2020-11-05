@@ -45,6 +45,6 @@ class AuthController extends Controller
     public function authUser()
     {
         $user = auth('api')->user();
-        return $authUser = User::with('galleries', 'galleries.galleryImages')->findOrFail($user->id);
+        return $authUser = User::with('galleries', 'galleries.galleryImages', 'comments')->findOrFail($user->id);
     }
 }

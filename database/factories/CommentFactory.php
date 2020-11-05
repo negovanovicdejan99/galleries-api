@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Gallery;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GalleryFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Gallery::class;
+    protected $model = Comment::class;
 
     /**
      * Define the model's default state.
@@ -22,8 +22,8 @@ class GalleryFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence(4),
-            'description' => $this->faker->text(),
+            'body' => $this->faker->text(),
+            'gallery_id' => $this->faker->numberBetween(1, 30),
             'user_id' => $this->faker->numberBetween(1, 20),
         ];
     }

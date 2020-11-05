@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\GalleryImage;
 use App\Models\User;
+use App\Models\Comment;
 
 class Gallery extends Model
 {
@@ -20,11 +21,14 @@ class Gallery extends Model
     }
     public function addGalleryImages($url, $id) {
         return $this->galleryImages()->create([
-            'imageUrl' => $url,
+            'url' => $url,
             'gallery_id' => $id
         ]);
     }
     public function galleryImages() {
         return $this->hasMany(GalleryImage::class);
+    }
+    public function comments() {
+        return $this->hasMany(Comment::class);
     }
 }

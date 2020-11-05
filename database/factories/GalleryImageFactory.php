@@ -23,7 +23,7 @@ class GalleryImageFactory extends Factory
     {
         return [
             'Url' => 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
-            'gallery_id' => $this->faker->numberBetween(1, 20),
+            'gallery_id' => $this->faker->numberBetween(1, 30),
         ];
     }
 }

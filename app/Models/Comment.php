@@ -4,16 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use App\Models\Gallery;
 
-class GalleryImage extends Model
+class Comment extends Model
 {
-    use HasFactory;
     protected $fillable = [
-        'url',
-        'post_id'
+        'body',
+        'gallery_id',
+        'user_id',
     ];
-    public function gallery () {
+    use HasFactory;
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+    public function gallery() {
         return $this->belongsTo(Gallery::class);
     }
 }

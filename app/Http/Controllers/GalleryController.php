@@ -30,14 +30,17 @@ class GalleryController extends Controller
     public function store(CreateGalleryRequest $request)
     {
         $data = $request->validated();
-        $user = User::findOrFail($request['id']);
+        $user = auth('api')->user();
+        $user = User::findOrFail($user->id);
         $gallery = Gallery::create([
             "title" => $data["title"],
             "description" => $data["description"],
             "user_id" => $user['id']
         ]);
-        foreach ($data['images'] as $url) {
-        $gallery->addGalleryImages($url, $gallery['id']);
+        foreach ($data['images'] as $imageUrl) {
+            foreach ($imageUrl as $url) {
+                $gallery->addGalleryImages($url, $gallery['id']);
+            }
         }
     }
 
@@ -49,7 +52,7 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::with('galleryImages', 'user')->findOrFail($id);
+        $gallery = Gallery::with('galleryImages', 'user', 'comments', 'comments.user')->findOrFail($id);
         return $gallery;
     }
 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class GalleryImageSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class GalleryImageSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\GalleryImage::factory()->times(150)->create();
-        }
+        \App\Models\Comment::factory()->times(150)->create();
+    }
 }
