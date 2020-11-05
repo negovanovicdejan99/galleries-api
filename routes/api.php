@@ -29,6 +29,7 @@ Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
 Route::get('/author/{id}', [UserController::class, 'show']);
 Route::post('/galleries/{id}/comments', [CommentController::class, 'store']);
 Route::delete('/delete-comment/{id}', [CommentController::class, 'destroy']);
+Route::put('/edit-gallery/{id}', [GalleryController::class, 'update']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -36,3 +37,4 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/refresh', [AuthController::class, 'refresh']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/auth-user', [AuthController::class, 'authUser']);
+Route::get('/auth-user-gallery', [AuthController::class, 'authUserGallery']);

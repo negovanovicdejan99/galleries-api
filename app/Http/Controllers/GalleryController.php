@@ -6,6 +6,7 @@ use App\Models\Gallery;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateGalleryRequest;
 use Illuminate\Foundation\Auth\User;
+use App\Http\Requests\UpdateGalleryRequest;
 
 class GalleryController extends Controller
 {
@@ -14,9 +15,9 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $galleries = Gallery::with('galleryImages', 'user')->get();
+        $galleries = Gallery::with('galleryImages', 'user')->limit($request->header('numOfGalleries'))->get();
 
         return $galleries;
     }
@@ -37,11 +38,12 @@ class GalleryController extends Controller
             "description" => $data["description"],
             "user_id" => $user['id']
         ]);
-        foreach ($data['images'] as $imageUrl) {
-            foreach ($imageUrl as $url) {
+        foreach ($data['images'] as $imagesUrl) {
+            foreach ($imagesUrl as $url) {
                 $gallery->addGalleryImages($url, $gallery['id']);
             }
         }
+        return $gallery;
     }
 
     /**
@@ -63,9 +65,20 @@ class GalleryController extends Controller
      * @param  \App\Models\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gallery $gallery)
+    public function update(UpdateGalleryRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $gallery = Gallery::findOrFail($id);
+        $user = auth('api')->user();
+        if($user->id === $gallery->user_id){
+            $gallery->update($data);
+            foreach ($data['images'] as $imagesUrl) {
+                foreach ($imagesUrl as $url) {
+                    $gallery->updateGalleryImages($url, $gallery['id']);
+                }
+            }
+        }
+        return $gallery;
     }
 
     /**
@@ -78,7 +91,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::with('galleryImages', 'comments')->findOrFail($id);
         $user = auth('api')->user();
-        if($user->id = $gallery->user_id){
+        if($user->id === $gallery->user_id){
             $gallery->galleryImages()->delete();
             $gallery->comments()->delete();
             $gallery->delete();

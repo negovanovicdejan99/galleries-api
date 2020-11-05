@@ -25,6 +25,12 @@ class Gallery extends Model
             'gallery_id' => $id
         ]);
     }
+    public function updateGalleryImages($url, $id) {
+        return $this->galleryImages()->update([
+            'url' => $url,
+            'gallery_id' => $id
+        ]);
+    }
     public function galleryImages() {
         return $this->hasMany(GalleryImage::class);
     }
