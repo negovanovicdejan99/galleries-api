@@ -76,7 +76,13 @@ class GalleryController extends Controller
      */
     public function destroy($id)
     {
-        $gallery = Gallery::findOrFail($id);
-        $gallery->delete();
+        $gallery = Gallery::with('galleryImages', 'comments')->findOrFail($id);
+        $user = auth('api')->user();
+        if($user->id = $gallery->user_id){
+            $gallery->galleryImages()->delete();
+            $gallery->comments()->delete();
+            $gallery->delete();
+        }
+        return $gallery;
     }
 }
