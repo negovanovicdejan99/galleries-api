@@ -17,9 +17,24 @@ class GalleryController extends Controller
      */
     public function index(Request $request)
     {
-        $galleries = Gallery::with('galleryImages', 'user')->limit($request->header('numOfGalleries'))->get();
+        $galleriesQuery = Gallery::query();
+        $galleriesQuery->with('user', 'galleryImages');
+        $search = $request->header('searchText');
+        $galleriesQuery->where( functioN($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%')
+                ->orwhereHas('user', function($que) use ($search) {
+                    $que->where('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%');
+                });
+        });
 
-        return $galleries;
+        $galleries = $galleriesQuery->take($request->header('pagination'))
+        ->get();
+
+        $count = $galleriesQuery->count();
+
+        return [$galleries, $count];
     }
 
     /**
