@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\RegisterUserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Gallery;
 
 class AuthController extends Controller
 {
@@ -47,9 +48,27 @@ class AuthController extends Controller
         $user = auth('api')->user();
         return $authUser = User::findOrFail($user->id);
     }
-    public function authUserGallery() 
+    public function authUserGallery(Request $request) 
     {
         $user = auth('api')->user();
-        return $authUser = User::with('galleries', 'galleries.galleryImages', 'comments')->findOrFail($user->id);
+
+        $galleriesQuery = Gallery::query();
+        $galleriesQuery->with('user', 'galleryImages');
+        $search = $request->header('searchText');
+        $galleriesQuery->where( functioN($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%')
+                ->orwhereHas('user', function($que) use ($search) {
+                    $que->where('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%');
+                });
+        });
+
+        $galleries = $galleriesQuery->where('user_id', $user->id)->take($request->header('pagination'))
+        ->get();
+
+        $count = $galleriesQuery->count();
+
+        return [$user, $galleries, $count];
     }
 }

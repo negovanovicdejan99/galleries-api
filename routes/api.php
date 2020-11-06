@@ -21,20 +21,21 @@ use App\Http\Controllers\CommentController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/galleries', [GalleryController::class, 'store']);
+    Route::post('/galleries/{id}/comments', [CommentController::class, 'store']);
+    Route::put('/edit-gallery/{id}', [GalleryController::class, 'update']);
+    Route::delete('/delete-comment/{id}', [CommentController::class, 'destroy']);
+    Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
+    Route::get('/auth-user', [AuthController::class, 'authUser']);
+    Route::get('/auth-user-gallery', [AuthController::class, 'authUserGallery']);
+});   
 
 Route::get('/galleries', [GalleryController::class, 'index']);
 Route::get('/galleries/{id}', [GalleryController::class, 'show']);
-Route::post('/galleries', [GalleryController::class, 'store']);
-Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
 Route::get('/author/{id}', [UserController::class, 'show']);
-Route::post('/galleries/{id}/comments', [CommentController::class, 'store']);
-Route::delete('/delete-comment/{id}', [CommentController::class, 'destroy']);
-Route::put('/edit-gallery/{id}', [GalleryController::class, 'update']);
-
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/refresh', [AuthController::class, 'refresh']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/auth-user', [AuthController::class, 'authUser']);
-Route::get('/auth-user-gallery', [AuthController::class, 'authUserGallery']);
